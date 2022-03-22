@@ -1,0 +1,8 @@
+x-aws-vpc: "vpc-0dece3d7dce2d0578"
+services:
+  web:
+    image: ${YOUR_ACCOUNT_ID_HERE}.dkr.ecr.${CREATED_AWS_ECR_CONTAINER_REPO_REGION}.amazonaws.com/${ECR_REPO_NAME}:$IMAGE_TAG 
+    build:
+      context: .
+    ports:
+      - "81:81"

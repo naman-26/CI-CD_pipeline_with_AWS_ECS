@@ -3,6 +3,7 @@
 pipeline {
     agent any
     environment {
+        AWS_CREDS = credentials('naman-aws-creds')
         AWS_ACCOUNT_ID="YOUR_ACCOUNT_ID_HERE"
         AWS_DEFAULT_REGION="CREATED_AWS_ECR_CONTAINER_REPO_REGION" 
         IMAGE_REPO_NAME="ECR_REPO_NAME"
@@ -23,7 +24,8 @@ pipeline {
             steps {
                 script {
                     echo "building the docker image..."
-                    dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                    sh 'docker context use default'
+                    sh 'docker compose -f docker-compose.yaml build'
                 }
             }
         }
@@ -31,9 +33,16 @@ pipeline {
             steps{  
                 script {
                     echo "pushing the docker image to AWS ECR..."
-                    sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
-                    sh "docker push ${REPOSITORY_URI}:${IMAGE_TAG}"
+                    sh "docker compose push ${REPOSITORY_URI}:${IMAGE_TAG}"
                 }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying on AWS ECS...'
+                sh 'docker context use myecscontext'
+                sh 'docker compose -f docker-compose.yaml up'
+                sh 'docker compose ps --format json'
             }
         }
     }   

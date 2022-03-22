@@ -7,7 +7,7 @@ Some important steps can be seen in this project, such as building Docker image,
 ### Prerequisites
 - Download and install the latest version of Docker Desktop
 - Ensure you have an AWS account
-- Create and Configure a Jenkins Server using Jenkins Docker image (https://hub.docker.com/_/jenkins)
+- Create and Configure a Jenkins Server using Jenkins Docker image (https://hub.docker.com/_/jenkins, https://www.jenkins.io/doc/tutorials/tutorial-for-installing-jenkins-on-AWS/)
 - Create a AWS ECR repo, and rename the repo name in Jenkins file (https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-create.html)
 - Create AWS context, using docker context create ecs myecscontext command (https://docs.docker.com/cloud/ecs-integration/)
 
